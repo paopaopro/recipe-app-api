@@ -1,0 +1,18 @@
+# Docker Compose configuration for the Recipe App API
+version: "3.9" # version of the docker-compose file format
+
+services:
+  app:
+    # Define the build context for the Docker image
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    # Command to run the Django development server
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+      
