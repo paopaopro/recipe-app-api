@@ -22,6 +22,9 @@ ARG DEV=false
 RUN python -m venv /py && \
     # Upgrade pip and install requirements
     /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache --virtual .tmp-build-dev \
+        build-base postgresql-dev musl-dev && \
     # Install dependencies from requirements.txt
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ "$DEV" = "true" ]; \
@@ -29,6 +32,7 @@ RUN python -m venv /py && \
     fi && \
     # Clean up temporary files
     rm -rf /tmp && \
+    apk del .tmp-build-deps && \
     # Create a non-root user
     adduser \
         # Create a system user without home directory and with no password
